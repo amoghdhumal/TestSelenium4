@@ -1,15 +1,12 @@
 package com;
 
-import java.util.List;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptException;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -23,25 +20,34 @@ public class TableHeightWidth {
     @BeforeClass
     public void init1() {
         System.setProperty("webdriver.chrome.driver", "D:\\amogh-workspace\\cucumber\\src\\main\\java\\resources\\chromedriver.exe");
-        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();;
-        driver = new ChromeDriver();
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+        ;
+        // driver = new ChromeDriver();
     }
 
     @Test
     public void checkAncestor() {
 
         System.setProperty("webdriver.chrome.driver", "D:\\amogh-workspace\\cucumber\\src\\main\\java\\resources\\chromedriver.exe");
-        OutputType<String> str2 = null ;
-        driver.get("http://demo.guru99.com/test/table.html");
-        // Print all the which are sibling of the the element named as 'SELENIUM' in 'Popular course'
-        String str1;
-        System.out.println(driver.findElement(By.xpath(".//tbody")).getSize());
-        System.out.println("Height" +driver.findElement(By.xpath(".//tbody")).getRect().getHeight());
-        System.out.println("width" + driver.findElement(By.xpath(".//tbody")).getRect().getWidth());
-        System.out.println("width" + driver.findElement(By.xpath(".//tbody")).getScreenshotAs(str2));
-        System.out.println(str2);
-        
-        
+        OutputType<String> str2 = null;
+        String baseUrl = "http://demo.guru99.com/test/newtours/";
+
+        driver = new ChromeDriver();
+
+        driver.get(baseUrl);
+        WebElement link_Home = driver.findElement(By.linkText("Home"));
+        WebElement td_Home = driver.findElement(By.xpath("//html/body/div" + "/table/tbody/tr/td" + "/table/tbody/tr/td" + "/table/tbody/tr/td" + "/table/tbody/tr"));
+
+        Actions builder = new Actions(driver);
+        Action mouseOverHome = builder.moveToElement(link_Home).build();
+
+        String bgColor = td_Home.getCssValue("background-color");
+        System.out.println("Before hover: " + bgColor);
+        mouseOverHome.perform();
+        bgColor = td_Home.getCssValue("background-color");
+        System.out.println("After hover: " + bgColor);
+        driver.close();
+
     }
 
     @AfterClass
@@ -50,5 +56,3 @@ public class TableHeightWidth {
     }
 
 }
-
-
